@@ -1,11 +1,19 @@
 import React from 'react'
-import { Container } from '@material-ui/core'
+import Header from '../Components/Header'
 
 const Base = ({ children }) => {
     return (
-        <Container maxWidth="md">
-            {children }
-        </Container>
+        <>
+            <Header />
+            <div style={{
+                maxWidth: "1000px",
+                marginLeft: "auto",
+                marginRight: "auto",
+                padding: "10px"
+            }} className="container">
+                { children }
+            </div>
+        </>
     )
 }
 

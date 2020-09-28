@@ -1,54 +1,64 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import React, { useRef } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import { isAuthenticated, SignOut } from '../../Auth/helper'
+import Button from '../Button'
+import styles from './header.module.css'
 
-const HeaderContainer = styled.header`
-    background-color: #fff;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content:center;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.1);
-    padding: 5px;
-`
-const Logo = styled.span`
-    padding: 10px 14px;
-    background-color: #DA552F;
-    color: white;
-    border-radius: 50%;
-    font-size: 20px;
-    justify-self: left;
-`
-
-const Menu = styled.div`
-    display: flex;
-    align-items:left;
-    justify-content: center;
-`
-const MenuItem = styled(Link)`
-    padding: 5px 8px;
-    text-decoration:none;
-    color: black;
-`
-const Button = styled(Link)`
-    padding: 5px 8px;
-    background-color: #fff;
-    border: solid 1px #e8e8e8;
-
-`
-
-const Header = () => {
+const Header = ({ history }) => {
+    const NavMenuRef = useRef()
     return (
-        <HeaderContainer>
-            <Logo>P</Logo>
-            <Menu>
-                <MenuItem to="/">Home</MenuItem>
-                <MenuItem to="/">About</MenuItem>
-                <MenuItem to="/">Contact</MenuItem>
-            </Menu>
-            <Button>Login</Button>
-        </HeaderContainer>
+        <div className={ styles.header_container }>
+            <div className={ styles.header_inner }>
+                <div className={ styles.header_logo }>
+                    <Link to="/">
+                        <h1 style={ { color: "black" } }>वस्तु खोज</h1>
+                    </Link>
+                </div>
+                <div onClick={ (e) => {
+                    if (NavMenuRef.current.style.display === "flex") {
+                        NavMenuRef.current.style.display = "none"
+                    } else {
+                        NavMenuRef.current.style.display = "flex"
+                    }
+                } } className={ styles.hamburger_menu }>
+                    <div className={ styles.ham_bar }></div>
+                    <div className={ styles.ham_bar }></div>
+                    <div className={ styles.ham_bar }></div>
+                </div>
+                <div ref={ NavMenuRef } className={ styles.header_links }>
+                    <Link to="/" className={ styles.header_link }>Home</Link>
+                    <Link to="/products" className={ styles.header_link }>Products</Link>
+                    <Link to="/users" className={ styles.header_link }>Users</Link>
+                    <div onClick={ (e) => {
+                        if (NavMenuRef.current.style.display === "flex") {
+                            NavMenuRef.current.style.display = "none"
+                        } else {
+                            NavMenuRef.current.style.display = "flex"
+                        }
+                    } } className={[ styles.hamburger_menu , styles.hamburder_menu_clicked, styles.hamBugerSide ].join(" ")}>
+                        <div className={ styles.ham_bar }></div>
+                        <div className={ styles.ham_bar }></div>
+                        <div className={ styles.ham_bar }></div>
+                    </div>
+                    { isAuthenticated() ? (
+                        <>
+                            <Button onClick={ () => {
+                                SignOut(() => {
+                                    history.push("/")
+                                })
+                            } } className={ styles.header_link_button }>Sign Out</Button>
+                            <Link className={ styles.user_IMAGE } to={ `/user/${isAuthenticated().user.username}` }><img src={ isAuthenticated().user.userImageUrl } style={ { height: "100%", width: "auto", borderRadius: "50%", maxHeight: "40px" } } alt={ isAuthenticated().user.name } /></Link>
+                        </>
+                    ) : (
+                            <>
+                                <Link to="/signin" className={ styles.header_link_button }>Sign in</Link>
+                                <Link to="/signup" className={ styles.header_link_button }>Sign up</Link>
+                            </>
+                        ) }
+                </div>
+            </div>
+        </div>
     )
 }
 
-export default Header
+export default withRouter(Header)

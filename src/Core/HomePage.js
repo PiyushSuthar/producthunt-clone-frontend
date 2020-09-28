@@ -1,17 +1,15 @@
 import React from 'react'
-import Header from '../Components/Header'
-import styled from 'styled-components'
-
-const Container = styled.div`
-    background-color: #f3f3f3;
-    height: 100%;
-`
+import Base from './Base'
+import Card from "../Components/Card";
 
 const HomePage = () => {
     return (
-        <Container>
-            <Header />
-        </Container>
+        <Base>
+            <h1>Hello World</h1>
+            <Card />
+            <Card />
+            <Card />
+        </Base>
     )
 }
 

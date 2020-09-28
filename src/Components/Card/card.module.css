@@ -1,0 +1,47 @@
+.cardouter_link{
+    max-width: 600px;
+    background-color: white;
+}
+.cardouter_link:hover .card_outer {
+    background-color: rgb(247, 247, 247);
+}
+.card_outer{
+    background-color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border: 2px dashed rgb(146, 146, 146);
+    margin: 10px 2px;
+    padding: 15px;
+    align-items: center;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
+}
+.card_product_info{
+    flex: 1;
+    padding: 2px 5px;
+    margin-left: 10px;
+}
+.card_product_name h3{
+    font-size: 16px;
+    font-weight: 600;
+}
+.card_product_name p{
+    font-size: 13px;
+    font-weight: 300;
+    color: #3f3f3f;
+}
+.card_outer a{
+    color: initial;
+}
+a.cardouter_link {
+    color: initial;
+}
+.card_upvote_counter{
+    border: 2px dashed rgb(146, 146, 146);
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
