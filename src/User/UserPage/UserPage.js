@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Base from '../../Core/Base'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Button from '../../Components/Button'
 import Card from '../../Components/Card'
 import { followUser, getUserByUsername, unFollowUser } from '../Helper'
 import { isAuthenticated } from '../../Auth/helper'
+import WhiteBgContainer from '../../Components/WhiteBackContainer'
 
 const UserPage = () => {
     const { username } = useParams()
@@ -26,49 +27,63 @@ const UserPage = () => {
     }, [username])
 
     const FollowButton = () => {
-        const followThisUser = () => {
+        const followThisUser = (next) => {
             followUser(data.username, token).then(resData => {
                 if (resData.error) {
                     console.log(resData.error)
                     return
                 }
+                next && next()
 
             })
         }
-        const unFollowThisUser = () => {
+        const unFollowThisUser = (next) => {
             unFollowUser(data.username, token).then(resData => {
                 if (resData.error) {
                     console.log(resData.error)
                     return
                 }
-
+                next && next()
             })
         }
         if (user._id !== data._id) {
-            if(data.followers.includes(user._id)){
-                return(
-                    <Button onClick={ () => unFollowThisUser() }>unFollow</Button>
-                )
-            }else{
+            if (typeof data.followers && data.followers.includes(user._id)) {
                 return (
-                    <Button onClick={ () => followThisUser() }>Follow</Button>
+                    <Button onClick={ () => {
+                        unFollowThisUser(() => {
+                            setData(prev => {
+                                return {
+                                    ...prev,
+                                    followers: [...data.followers.filter(data => data !== user._id)]
+                                }
+                            })
+                        })
+                    } }>unFollow</Button>
+                )
+            } else {
+                return (
+                    <Button onClick={ () => {
+                        followThisUser(() => {
+                            setData(prev => {
+                                return {
+                                    ...prev,
+                                    followers: [...prev.followers, user._id]
+                                }
+                            })
+                        })
+
+                    } }>Follow</Button>
                 )
             }
-        }else{
+        } else {
             return (
-                <Button onClick={ () => console.log("Click") }>Edit</Button>
+                <Link to="/dashboard/user"><Button>Edit</Button></Link>
             )
         }
     }
 
     const UserProfile = () => (
-        <div style={ {
-            backgroundColor: "white",
-            padding: "10px",
-            width: "100%",
-            height: "100%",
-            boxShadow: "0 0 12px 0 rgba(0,0,0,0.1)",
-        } } className="container">
+        <WhiteBgContainer>
             <div style={ {
                 padding: "10px",
                 display: "flex",
@@ -93,7 +108,7 @@ const UserPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </WhiteBgContainer>
     )
 
 
@@ -103,11 +118,16 @@ const UserPage = () => {
             {loaded ? (
                 <>
                     <UserProfile />
-                    <h3 style={ {
-                        fontSize: "25px",
-                        fontWeight: "500",
-                        margin: "5px 10px"
-                    } }>Products</h3>
+                    <div style={ { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" } }>
+                        <h3 style={ {
+                            fontSize: "25px",
+                            fontWeight: "500",
+                            margin: "5px 10px"
+                        } }>Products</h3>
+                        { user._id === data._id && (
+                            <Link to="/create/product"><Button  >Create Product</Button></Link>
+                        ) }
+                    </div>
                     {data.products.map((product, index) => (
                         <Card key={ index }
                             name={ product.name }
