@@ -3,22 +3,37 @@ import DashList from '../../Components/DashList'
 import WhiteBgContainer from '../../Components/WhiteBackContainer'
 import Base from '../../Core/Base'
 import styles from './userDash.module.css'
+import { Switch, Route } from 'react-router-dom'
+import EditUser from './EditUser'
+import ManageProducts from './manageProduct/products'
 
 const UserDashboard = () => {
 
     const MainDash = () => (
         <div className={ styles.MainDashContainer }>
             <div className={ styles.sidebar }>
-                <DashList />
+                <h5 className={ styles.settingsHeader }>Dashboard</h5>
+                <DashList data={ [
+                    { link: "/dashboard/user/edit", text: "Edit User" },
+                    { link: "/dashboard/user/products", text: "Products" },
+                    { link: "/dashboard/user/settings", text: "Settings" },
+                ] } />
             </div>
             <div className={ styles.MainArea }>
-                Some Other stuff here
+                <Switch>
+                    <Route path="/dashboard/user/edit" component={ EditUser } />
+                    <Route path="/dashboard/user/products" component={ ManageProducts } />
+                    <Route path="/dashboard/user/settings">
+                        Settings
+                    </Route>
+                    <Route>Dashboard</Route>
+                </Switch>
             </div>
         </div>
     )
 
     return (
-        <Base>
+        <Base title="नियंत्रण-पट्ट">
             <div className={ styles.introContainer }>
                 <h3 className={ styles.heading }>Dashboard</h3>
                 <p className={ styles.description }>Do Your Not so lovely Stuff here!</p>

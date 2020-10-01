@@ -35,7 +35,7 @@ const Header = ({ history }) => {
                         } else {
                             NavMenuRef.current.style.display = "flex"
                         }
-                    } } className={[ styles.hamburger_menu , styles.hamburder_menu_clicked, styles.hamBugerSide ].join(" ")}>
+                    } } className={ [styles.hamburger_menu, styles.hamburder_menu_clicked, styles.hamBugerSide].join(" ") }>
                         <div className={ styles.ham_bar }></div>
                         <div className={ styles.ham_bar }></div>
                         <div className={ styles.ham_bar }></div>
@@ -47,6 +47,8 @@ const Header = ({ history }) => {
                                     history.push("/")
                                 })
                             } } className={ styles.header_link_button }>Sign Out</Button>
+                            <Link to="/create/product"><Button>Post</Button></Link>
+                            <Link to="/dashboard/user"><Button>Dashboard</Button></Link>
                             <Link className={ styles.user_IMAGE } to={ `/user/${isAuthenticated().user.username}` }><img src={ isAuthenticated().user.userImageUrl } style={ { height: "100%", width: "auto", borderRadius: "50%", maxHeight: "40px" } } alt={ isAuthenticated().user.name } /></Link>
                         </>
                     ) : (

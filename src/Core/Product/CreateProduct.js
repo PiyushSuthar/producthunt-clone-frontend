@@ -4,6 +4,7 @@ import FormInput from '../../Components/Form/input'
 import Button from '../../Components/Button'
 import { createProduct } from './helper'
 import { isAuthenticated } from '../../Auth/helper'
+import { Link } from 'react-router-dom'
 
 const CreateProduct = () => {
     const [data, setData] = useState({
@@ -61,7 +62,7 @@ const CreateProduct = () => {
 
 
     return (
-        <Base>
+        <Base title="उत्पाद बनाएँ">
             <div style={ {
                 backgroundColor: "white",
                 padding: "20px 40px",
@@ -71,8 +72,15 @@ const CreateProduct = () => {
             } } className="container">
                 { errorDialog() }
                 { successDialog() }
-                <h3>Create Product!</h3>
-                <p>Fill the fields correctly!</p>
+                <div style={ { display: "flex", flexDirection: "row", justifyContent: "space-between" } }>
+                    <div>
+                        <h3>Create Product!</h3>
+                        <p>Fill the fields correctly!</p>
+                    </div>
+                    <Link to="/dashboard/user/products">
+                        <Button>Manage Products</Button>
+                    </Link>
+                </div>
                 <form onSubmit={ handleSubmit }>
                     <FormInput onChange={ handleInput("name") } type="text" placeholder="Name" label="Product Name" name="name" required />
                     <FormInput onChange={ handleInput("logo") } type="file" placeholder="Select Below 1mb" label="Product Logo" name="logo" required />

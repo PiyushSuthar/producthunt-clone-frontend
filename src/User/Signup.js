@@ -68,7 +68,7 @@ const SignUp = () => {
     }
 
     return (
-        <Base title="Register">
+        <Base title="साइन अप करें">
             <div style={ {
                 display: "flex",
                 flexDirection: "column",

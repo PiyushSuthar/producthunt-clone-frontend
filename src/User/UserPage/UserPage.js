@@ -77,7 +77,7 @@ const UserPage = () => {
             }
         } else {
             return (
-                <Link to="/dashboard/user"><Button>Edit</Button></Link>
+                <Link to="/dashboard/user"><Button>Dashboard</Button></Link>
             )
         }
     }
@@ -114,7 +114,7 @@ const UserPage = () => {
 
 
     return (
-        <Base title="Piyush Suthar">
+        <Base title={ data.name ? "श्रीमान " + data.name : undefined }>
             {loaded ? (
                 <>
                     <UserProfile />

@@ -4,9 +4,13 @@
 .dashList_list{
     width: 100%;
     padding: 10px;
-    border-bottom: 1px solid rgb(199, 199, 199);
-}
-.dashList_list:nth-child(1){
     border-top: 1px solid rgb(199, 199, 199);
-    
+    color: rgb(43, 43, 43);
+}
+
+.dashList_list:hover{
+    background-color: rgb(226, 226, 226);
+}
+.dashList_list_link:last-child{
+    border-bottom: 1px solid rgb(199, 199, 199);
 }

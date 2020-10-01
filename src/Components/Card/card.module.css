@@ -10,7 +10,7 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    border: 2px dashed rgb(146, 146, 146);
+    /* border: 2px dashed rgb(146, 146, 146); */
     margin: 10px 2px;
     padding: 15px;
     align-items: center;

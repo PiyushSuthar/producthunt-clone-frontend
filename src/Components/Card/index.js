@@ -1,6 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import { isAuthenticated } from '../../Auth/helper'
 import { API } from '../../config'
+import { upvoteProduct } from '../../Core/Product/helper'
 import styles from './card.module.css'
 
 const ProductCard = ({
@@ -9,8 +11,35 @@ const ProductCard = ({
     description = "Toolzar is an awesome app with some really awesome web... Probably a awesome app!",
     logo = "https://www.gravatar.com/avatar/e31205ff3c84df50c69103c2e9700ec9?s=200",
     upvotes = 123,
-    link = "https://toolzar.js.org"
+    link = "https://toolzar.js.org",
+    history
 }) => {
+    const [count, setCount] = useState(0)
+    useEffect(()=> {
+        setCount(upvotes)
+    }, [upvotes])
+    const UPVoteBUtton = () => {
+        return (
+            <button onClick={ (e) => {
+                e.preventDefault()
+                if (isAuthenticated()) {
+                    const { token } = isAuthenticated()
+                    upvoteProduct(id, token).then(resData => {
+                        if (resData.error) {
+                            console.log(resData.error)
+                            return
+                        }
+                        setCount(prev => prev+1)
+                    })
+                } else {
+                    history.push("/signin")
+                }
+            } } style={ { cursor: "pointer", pointerEvents: "initial" } } className={ styles.card_upvote_counter }>
+                <div className="arrow">&#x25B2;</div>
+                <div className="number">{ count }</div>
+            </button>
+        )
+    }
     return (
         <Link className={ styles.cardouter_link } to={ `/product/${id}` }>
             <div className={ styles.card_outer }>
@@ -29,16 +58,10 @@ const ProductCard = ({
                         } } style={ { cursor: "pointer", } }>visit &rarr;</button>
                     </div>
                 </div>
-                <button onClick={ (e) => {
-                    e.preventDefault()
-                    console.log("Click")
-                } } style={ { cursor: "pointer", pointerEvents: "initial" } } className={ styles.card_upvote_counter }>
-                    <div className="arrow">&#x25B2;</div>
-                    <div className="number">{ upvotes }</div>
-                </button>
+                <UPVoteBUtton />
             </div>
         </Link>
     )
 }
 
-export default ProductCard
+export default withRouter(ProductCard)

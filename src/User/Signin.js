@@ -65,7 +65,7 @@ const Signin = () => {
     }
 
     return (
-        <Base title="Sign In">
+        <Base title="लॉग इन करें">
             <div style={ {
                 display: "flex",
                 flexDirection: "column",
@@ -83,7 +83,7 @@ const Signin = () => {
                     { errorDialog() }
                     { performRedirect() }
                     <h3 style={ { fontWeight: "500", fontSize: "25px" } }>Log in!</h3>
-                    <p>Not registered? <Link to="/signin">Register &rarr;</Link></p>
+                    <p>Not registered? <Link to="/signup">Register &rarr;</Link></p>
                     <form onSubmit={ handleSubmit }>
                         <FormInput type="email" onChange={ handleChange("email") } name="email" placeholder="Ex. piyush@mysite.com" label="Your Email" required />
                         <FormInput type="password" onChange={ handleChange("password") } name="password" placeholder="********" label="Your Password" required />
