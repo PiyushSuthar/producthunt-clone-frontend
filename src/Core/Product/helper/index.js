@@ -48,3 +48,9 @@ export const getAllProductsByUsername = username => {
         method: "GET"
     }).then(res => res.json()).catch(err => console.log(err))
 }
+
+export const getProductsForHomepage = (perpage = 8, page = 1) => {
+    return fetch(`${API}/homepage/products?perpage=${perpage}&page=${page}`, {
+        method: "GET"
+    }).then(res => res.json()).catch(err => console.log(err))
+}

@@ -6,19 +6,21 @@ import Card from '../../Components/Card'
 import { followUser, getUserByUsername, unFollowUser } from '../Helper'
 import { isAuthenticated } from '../../Auth/helper'
 import WhiteBgContainer from '../../Components/WhiteBackContainer'
+import ErrorPage from '../../Components/Error-SucessDialog/ErrorPage'
 
 const UserPage = () => {
     const { username } = useParams()
 
     const [data, setData] = useState({})
     const [loaded, setLoaded] = useState(false)
-
-    const { user, token } = isAuthenticated()
+    const [error, setError] = useState("")
 
     useEffect(() => {
         getUserByUsername(username).then(resData => {
             if (resData.error) {
                 console.log(resData.error)
+                setError(resData.error)
+                setLoaded(true)
                 return
             }
             setData(resData)
@@ -28,7 +30,7 @@ const UserPage = () => {
 
     const FollowButton = () => {
         const followThisUser = (next) => {
-            followUser(data.username, token).then(resData => {
+            isAuthenticated() && followUser(data.username, isAuthenticated().token).then(resData => {
                 if (resData.error) {
                     console.log(resData.error)
                     return
@@ -38,7 +40,7 @@ const UserPage = () => {
             })
         }
         const unFollowThisUser = (next) => {
-            unFollowUser(data.username, token).then(resData => {
+            isAuthenticated() && unFollowUser(data.username, isAuthenticated().token).then(resData => {
                 if (resData.error) {
                     console.log(resData.error)
                     return
@@ -46,15 +48,15 @@ const UserPage = () => {
                 next && next()
             })
         }
-        if (user._id !== data._id) {
-            if (typeof data.followers && data.followers.includes(user._id)) {
+        if (isAuthenticated() && isAuthenticated().user._id !== data._id) {
+            if (typeof data.followers && data.followers.includes(isAuthenticated().user._id)) {
                 return (
                     <Button onClick={ () => {
                         unFollowThisUser(() => {
                             setData(prev => {
                                 return {
                                     ...prev,
-                                    followers: [...data.followers.filter(data => data !== user._id)]
+                                    followers: [...data.followers.filter(data => data !== isAuthenticated().user._id)]
                                 }
                             })
                         })
@@ -67,7 +69,7 @@ const UserPage = () => {
                             setData(prev => {
                                 return {
                                     ...prev,
-                                    followers: [...prev.followers, user._id]
+                                    followers: [...prev.followers, isAuthenticated().user._id]
                                 }
                             })
                         })
@@ -93,7 +95,7 @@ const UserPage = () => {
                 flexWrap: "wrap"
             } } className="profile_container">
                 <div className="profile_user_img">
-                    <img src={ data.userImageUrl } style={ {
+                    <img src={ data.userImageUrl.includes("https://www.gravatar.com") ? data.userImageUrl + "?s=200" : data.userImageUrl } style={ {
                         borderRadius: "50%"
                     } } alt={ data.name } />
                 </div>
@@ -104,7 +106,7 @@ const UserPage = () => {
                     <div style={ {
                         marginTop: "10px"
                     } } className="profile_user_buttons">
-                        <FollowButton />
+                        { isAuthenticated().user ? <FollowButton /> : <Link to="/signin"><Button>Login To Follow</Button></Link> }
                     </div>
                 </div>
             </div>
@@ -115,7 +117,9 @@ const UserPage = () => {
 
     return (
         <Base title={ data.name ? "श्रीमान " + data.name : undefined }>
-            {loaded ? (
+            {loaded ? error? (
+                <ErrorPage/>
+            ):(
                 <>
                     <UserProfile />
                     <div style={ { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" } }>
@@ -124,7 +128,7 @@ const UserPage = () => {
                             fontWeight: "500",
                             margin: "5px 10px"
                         } }>Products</h3>
-                        { user._id === data._id && (
+                        { isAuthenticated() && isAuthenticated().user._id === data._id && (
                             <Link to="/create/product"><Button  >Create Product</Button></Link>
                         ) }
                     </div>

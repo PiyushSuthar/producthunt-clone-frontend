@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { isAuthenticated } from '../../Auth/helper'
 import { API } from '../../config'
@@ -49,7 +49,7 @@ const ProductCard = ({
                 <div className={ styles.card_product_info }>
                     <div className={ styles.card_product_name }>
                         <h3>{ name }</h3>
-                        <p>{ description }</p>
+                        <p>{ description.substr(0,100) + "..." }</p>
                     </div>
                     <div style={ { position: "relative", zIndex: "5" } } className={ styles.card_product_meta }>
                         <button onClick={ (e) => {
