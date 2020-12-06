@@ -2,6 +2,20 @@
     background-color: #fff;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.1);
     padding: 5px;
+    animation: SlideUp 0.3s ease;
+}
+@keyframes SlideUp {
+    from {
+        transform: translateY(-5px);
+        opacity: 0;
+      }
+      50% {
+        transform: translateY(2px);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(0px);
+    }
 }
 .header_inner{
     display: flex;
@@ -59,6 +73,7 @@
         box-shadow: 0 2px 5px 0 rgba(0,0,0,0.1);
         flex-direction: column-reverse;
         width:200px ;
+        z-index: 5;
     }
     .header_link:nth-child(3){
         margin-right: initial;

@@ -57,10 +57,24 @@ const Signin = () => {
 
     const performRedirect = () => {
         if (data.redirect) {
-            return <Redirect to="/" />
+            if (typeof window !== 'undefined') {
+                const redirectUrl = new URLSearchParams(window.location.search).get("redirect")
+                console.log(redirectUrl)
+                if (redirectUrl) {
+                    return <Redirect to={ `${redirectUrl}` } />
+                }
+                return <Redirect to="/" />
+            }
         }
         if (isAuthenticated()) {
-            return <Redirect to="/" />
+            if (typeof window !== 'undefined') {
+                const redirectUrl = new URLSearchParams(window.location.search).get("redirect")
+                console.log(redirectUrl)
+                if (redirectUrl) {
+                    return <Redirect to={ `${redirectUrl}` } />
+                }
+                return <Redirect to="/" />
+            }
         }
     }
 

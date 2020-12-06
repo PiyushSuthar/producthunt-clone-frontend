@@ -1,11 +1,11 @@
 import React from 'react'
 
-const SuccessDialog = ({ children }) => {
+const SuccessDialog = ({ children, color = "green" }) => {
     return (
         <h3 style={ {
-            color: "green",
+            color: color,
             fontWeight: "400",
-            border: "2px dashed green",
+            border: `2px dashed ${color}`,
             padding: "10px",
             marginBottom: "10px"
         } }>{ children }</h3>

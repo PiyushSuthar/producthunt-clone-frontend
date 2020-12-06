@@ -1,0 +1,22 @@
+.singleComment, .comment_reply{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 10px;
+    width: 100%;
+}
+.commentor_avatar img{
+    border-radius: 50%;
+    width: 50px;
+    margin: 5px;
+}
+.commentor_name{
+    font-size: 16px;
+}
+.comment_data p{
+    font-size: 15px;
+}
+.comment_data{
+    width: 100%;
+}

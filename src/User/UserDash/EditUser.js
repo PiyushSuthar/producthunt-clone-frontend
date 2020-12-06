@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react'
 import { isAuthenticated } from '../../Auth/helper'
 import Button from '../../Components/Button'
 import FormInput from '../../Components/Form/input'
-import { getUserByUsername } from '../Helper'
+import { getUserByUsername, updateUser } from '../Helper'
 import { ErrorDialog, SuccessDialog } from '../../Components/Error-SucessDialog'
+import LoadingIndicator from '../../Components/LoadingIcon'
+import styles from './userDash.module.css'
 
 const EditUser = () => {
 
     const [data, setData] = useState({
         name: "",
         userBio: "",
-        userImageUrl: "",
+        username: "",
         success: false,
         error: "",
-        formData: ""
+        loading: true
     })
 
     const { user, token } = isAuthenticated()
@@ -21,34 +23,41 @@ const EditUser = () => {
     useEffect(() => {
         getUserByUsername(user.username).then(resData => {
             if (resData.error) {
-                setData(prev => { return { ...prev, error: resData.error, success: false } })
+                setData(prev => { return { ...prev, error: resData.error, success: false, loading: false } })
             }
-            setData(prev => { return { ...prev, name: resData.name, userBio: resData.userBio, formData: new FormData() } })
+            setData(prev => { return { ...prev, name: resData.name, userBio: resData.userBio, username: resData.username, loading: false } })
         })
     }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        updateUser(data.username, token, { name: data.name, userBio: data.userBio })
+            .then(resData => {
+                if (resData.error) {
+                    setData(prev => ({ ...prev, error: resData.error, success: false }))
+                    return
+                }
+                setData(prev => ({ ...prev, success: true, error: false }))
+            })
     }
 
     const handleInput = name => event => {
-        const value = name === "userImageUrl" ? event.target.files[0] : event.target.value
-        data.formData.set(name, value)
+        const value = event.target.value
         setData({ ...data, [name]: value })
     }
 
-    return (
-        <>
+    return data.loading ? <LoadingIndicator /> : (
+        <div className={styles.edit_user_container}>
             {data.error ? <ErrorDialog>Failed to Update!, { data.error }</ErrorDialog> : "" }
             {data.success ? <SuccessDialog>User Updated Sucessfully!</SuccessDialog> : "" }
             <form onSubmit={ handleSubmit }>
                 <FormInput type="text" onChange={ handleInput("name") } placeholder="Your Name" value={ data.name } name="name" label="Your Name" />
-                <FormInput type="text" onChange={ handleInput("userBio") } placeholder="Your Bio" value={ data.userBio } name="bio" label="Your Bio" />
-                <FormInput type="file" onChange={ handleInput("userImageUrl") } name="userImageUrl" label="Your Avatar" />
-                <p style={ { fontSize: "12px", } }>*Initialy, we grab your image from gavatar...</p>
+                <FormInput type="text" onChange={ handleInput("userBio") } isTextArea={ true } placeholder="Your Bio" value={ data.userBio } name="bio" label="Your Bio" />
+                <label style={ { padding: "10px" } }>Your Avatar</label>
+                <p style={ { fontSize: "15px", padding: "10px" } }>Please update it in your Gravatar Profile.</p>
                 <Button type="submit" style={ { width: "100%" } } >Update</Button>
             </form>
-        </>
+        </div>
     )
 }
 

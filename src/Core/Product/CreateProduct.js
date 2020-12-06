@@ -5,6 +5,7 @@ import Button from '../../Components/Button'
 import { createProduct } from './helper'
 import { isAuthenticated } from '../../Auth/helper'
 import { Link } from 'react-router-dom'
+import WhiteBackGroundDIV from './../../Components/WhiteBackContainer'
 
 const CreateProduct = () => {
     const [data, setData] = useState({
@@ -21,9 +22,10 @@ const CreateProduct = () => {
     const handleInput = name => event => {
         const value = name === "logo" ? event.target.files[0] : name === "images" ? event.target.files : event.target.value
         setData({ ...data, [name]: value })
+
         if (name === "images") {
             for (const key of Object.keys(value)) {
-                data.formData.set('images', value[key])
+                data.formData.append('images', value[key])
             }
         } else {
             data.formData.set(name, value)
@@ -63,13 +65,9 @@ const CreateProduct = () => {
 
     return (
         <Base title="उत्पाद बनाएँ">
-            <div style={ {
-                backgroundColor: "white",
+            <WhiteBackGroundDIV style={ {
                 padding: "20px 40px",
-                width: "100%",
-                height: "100%",
-                boxShadow: "0 0 12px 0 rgba(0,0,0,0.1)",
-            } } className="container">
+            } }>
                 { errorDialog() }
                 { successDialog() }
                 <div style={ { display: "flex", flexDirection: "row", justifyContent: "space-between" } }>
@@ -89,7 +87,7 @@ const CreateProduct = () => {
                     <FormInput onChange={ handleInput("images") } max={ 4 } type="file" placeholder="Select Below 1mb" multiple label="Product Images (Upto 4)" name="images" required />
                     <Button type="submit">Create</Button>
                 </form>
-            </div>
+            </WhiteBackGroundDIV>
         </Base>
     )
 }

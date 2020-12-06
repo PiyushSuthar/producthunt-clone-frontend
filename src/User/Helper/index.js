@@ -14,7 +14,7 @@ export const followUser = (userToFollowUsername, token) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         }
-    }).then(res=> res.json()).catch(err=> console.error(err))
+    }).then(res => res.json()).catch(err => console.error(err))
 }
 export const unFollowUser = (userToUnFollowUsername, token) => {
     return fetch(`${API}/user/unFollow/${userToUnFollowUsername}`, {
@@ -24,5 +24,16 @@ export const unFollowUser = (userToUnFollowUsername, token) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         }
-    }).then(res=> res.json()).catch(err=> console.error(err))
+    }).then(res => res.json()).catch(err => console.error(err))
+}
+export const updateUser = (username, token, data) => {
+    return fetch(`${API}/user/${username}`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    }).then(res => res.json()).catch(err => console.error(err))
 }

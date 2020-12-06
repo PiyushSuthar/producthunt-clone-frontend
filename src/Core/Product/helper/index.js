@@ -34,14 +34,16 @@ export const upvoteProduct = (productId, token) => {
         }
     }).then(res => res.json()).catch(err => console.log(err))
 }
-export const unUpvoteProduct = (productId, token) => {
-    return fetch(`${API}/product/unupvote/${productId}`, {
-        method: "PATCH",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }).then(res => res.json()).catch(err => console.log(err))
-}
+
+// Idea Canceled
+// export const unUpvoteProduct = (productId, token) => {
+//     return fetch(`${API}/product/unupvote/${productId}`, {
+//         method: "PATCH",
+//         headers: {
+//             Authorization: `Bearer ${token}`
+//         }
+//     }).then(res => res.json()).catch(err => console.log(err))
+// }
 
 export const getAllProductsByUsername = username => {
     return fetch(`${API}/products/${username}`, {

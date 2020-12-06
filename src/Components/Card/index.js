@@ -15,7 +15,7 @@ const ProductCard = ({
     history
 }) => {
     const [count, setCount] = useState(0)
-    useEffect(()=> {
+    useEffect(() => {
         setCount(upvotes)
     }, [upvotes])
     const UPVoteBUtton = () => {
@@ -29,7 +29,11 @@ const ProductCard = ({
                             console.log(resData.error)
                             return
                         }
-                        setCount(prev => prev+1)
+                        if (resData.type === "upvote") {
+                            setCount(prev => prev + 1)
+                        } else {
+                            setCount(prev => prev - 1)
+                        }
                     })
                 } else {
                     history.push("/signin")
@@ -49,13 +53,13 @@ const ProductCard = ({
                 <div className={ styles.card_product_info }>
                     <div className={ styles.card_product_name }>
                         <h3>{ name }</h3>
-                        <p>{ description.substr(0,100) + "..." }</p>
+                        <p>{ description.substr(0, 100) + "..." }</p>
                     </div>
-                    <div style={ { position: "relative", zIndex: "5" } } className={ styles.card_product_meta }>
+                    <div style={ { position: "relative", zIndex: "1" } } className={ styles.card_product_meta }>
                         <button onClick={ (e) => {
                             e.preventDefault()
                             window.open(link)
-                        } } style={ { cursor: "pointer", } }>visit &rarr;</button>
+                        } } style={ { cursor: "pointer", padding: "3px" } }>visit <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==" alt="" /></button>
                     </div>
                 </div>
                 <UPVoteBUtton />
