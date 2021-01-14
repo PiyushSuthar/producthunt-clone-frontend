@@ -8,6 +8,7 @@ import { isAuthenticated } from '../../Auth/helper'
 import WhiteBgContainer from '../../Components/WhiteBackContainer'
 import LoadingIndicator from '../../Components/LoadingIcon'
 import ErrorPage from '../../Components/Error-SucessDialog/ErrorPage'
+import Styles from './userPage.module.css'
 
 const UserPage = () => {
     const { username } = useParams()
@@ -29,7 +30,7 @@ const UserPage = () => {
         })
     }, [username])
 
-    const FollowButton = () => {
+    const FollowButton = React.memo(() => {
         const followThisUser = (next) => {
             isAuthenticated() && followUser(data.username, isAuthenticated().token).then(resData => {
                 if (resData.error) {
@@ -83,24 +84,18 @@ const UserPage = () => {
                 <Link to="/dashboard/user"><Button>Dashboard</Button></Link>
             )
         }
-    }
+    })
 
     const UserProfile = () => (
         <WhiteBgContainer>
-            <div style={ {
-                padding: "10px",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-evenly",
-            } } className="profile_container">
+            <div className={ Styles.profile_container }>
                 <div className="profile_user_img">
                     <img src={ data.userImageUrl.includes("https://www.gravatar.com") ? data.userImageUrl + "?s=200" : data.userImageUrl } style={ {
                         borderRadius: "50%",
                         margin: "10px"
                     } } alt={ data.name } />
                 </div>
-                <div className="profile_user_information">
+                <div className={ Styles.profile_user_information }>
                     <h3 style={ { fontSize: "25px", marginBottom: "0", paddingBottom: 0 } } className="proflle_user_name">{ data.name }</h3>
                     <p style={ { color: "grey", marginTop: "0" } } className="profile_user_username">@{ data.username }</p>
                     <p style={ { marginTop: "5px", fontSize: "14px" } }>{ data.userBio ? data.userBio : "" }</p>

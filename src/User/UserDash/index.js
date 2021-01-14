@@ -24,7 +24,9 @@ const UserDashboard = () => {
                     <Route path="/dashboard/user/edit" component={ EditUser } />
                     <Route path="/dashboard/user/products" component={ ManageProducts } />
                     <Route path="/dashboard/user/settings">
-                        Settings
+                        <div style={ { width: "100%", minWidth: "100%" } } className="seting">
+                            Settings
+                        </div>
                     </Route>
                     <Route>Dashboard</Route>
                 </Switch>

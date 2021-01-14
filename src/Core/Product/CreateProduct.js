@@ -81,10 +81,10 @@ const CreateProduct = () => {
                 </div>
                 <form onSubmit={ handleSubmit }>
                     <FormInput onChange={ handleInput("name") } type="text" placeholder="Name" label="Product Name" name="name" required />
-                    <FormInput onChange={ handleInput("logo") } type="file" placeholder="Select Below 1mb" label="Product Logo" name="logo" required />
+                    <FormInput onChange={ handleInput("logo") } type="file" accept="image/*" placeholder="Select Below 1mb" label="Product Logo" name="logo" required />
                     <FormInput onChange={ handleInput("description") } isTextArea={ true } placeholder="Description" label="Product Description" name="description" required />
                     <FormInput onChange={ handleInput("link") } type="url" placeholder="Link to Product" label="Product URL" name="link" required />
-                    <FormInput onChange={ handleInput("images") } max={ 4 } type="file" placeholder="Select Below 1mb" multiple label="Product Images (Upto 4)" name="images" required />
+                    <FormInput onChange={ handleInput("images") } max={ 4 } type="file" accept="image/*" placeholder="Select Below 1mb" multiple label="Product Images (Upto 4)" name="images" required />
                     <Button type="submit">Create</Button>
                 </form>
             </WhiteBackGroundDIV>

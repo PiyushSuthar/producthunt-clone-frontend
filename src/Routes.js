@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// Context Wrapper
+import GlobalContext from './Context'
 
 // AUTH And HOMEPAGE
 import SignUp from './User/SignUp';
@@ -20,27 +22,29 @@ import ErrorPage from './Components/Error-SucessDialog/ErrorPage';
 export default function Routes() {
     return (
         <Router>
-            <Switch>
-                {/* Main Routes AKA Auth and Homepage */ }
-                <Route exact path="/" component={ HomePage } />
-                <Route path="/signup" component={ SignUp } />
-                <Route path="/signin" component={ Signin } />
+            <GlobalContext>
+                <Switch>
+                    {/* Main Routes AKA Auth and Homepage */ }
+                    <Route exact path="/" component={ HomePage } />
+                    <Route path="/signup" component={ SignUp } />
+                    <Route path="/signin" component={ Signin } />
 
-                {/* User Routes */ }
-                <Route path="/user/:username" component={ UserPage } />
-                <ProtectedRoute path="/dashboard/user" component={ UserDashboard } />
+                    {/* User Routes */ }
+                    <Route path="/user/:username" component={ UserPage } />
+                    <ProtectedRoute path="/dashboard/user" component={ UserDashboard } />
 
-                {/* Products Routes */ }
-                <ProtectedRoute path="/create/product" component={ CreateProduct } />
-                <Route path="/product/:productId" component={ SingleProduct } />
+                    {/* Products Routes */ }
+                    <ProtectedRoute path="/create/product" component={ CreateProduct } />
+                    <Route path="/product/:productId" component={ SingleProduct } />
 
-                {/* 404 Route */ }
-                <Route>
-                    <Base>
-                        <ErrorPage />
-                    </Base>
-                </Route>
-            </Switch>
+                    {/* 404 Route */ }
+                    <Route>
+                        <Base>
+                            <ErrorPage />
+                        </Base>
+                    </Route>
+                </Switch>
+            </GlobalContext>
         </Router>
     )
 }

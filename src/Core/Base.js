@@ -6,7 +6,7 @@ const Base = ({ children, title }) => {
     return (
         <>
             <Helmet>
-                <title>{ title ? title+ " - वस्तु खोज" : "वस्तु खोज" }</title>
+                <title>{ title ? title + " - वस्तु खोज" : "वस्तु खोज" }</title>
             </Helmet>
             <Header />
             <div style={ {

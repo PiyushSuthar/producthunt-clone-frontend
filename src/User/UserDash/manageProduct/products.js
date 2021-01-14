@@ -17,14 +17,14 @@ const UserDashProducts = () => {
         getAllProductsByUsername(isAuthenticated().user.username).then(resData => {
             if (resData.error) {
                 console.log(resData.error)
+                // TODO
+                setLoading(false)
                 return
             }
-            setLoading(false)
             setData(resData)
+            setLoading(false)
         })
     }, [])
-
-
 
     return (
         <div className={ styles.userdash_products_container }>
@@ -32,7 +32,7 @@ const UserDashProducts = () => {
                 <h3>Manage Products</h3>
                 <Link to="/create/product"><Button>Create Products</Button></Link>
             </div>
-            <div style={ { width: '100%', paddingTop: "10px" } } className="products">
+            <div style={ { width: '100%', paddingTop: "10px", maxHeight: "50vh", overflowY: "auto" } } className="products">
                 { loading ? (
                     <LoadingIndicator />
                 ) : data.length > 0 ? data.map((product, index) => (
@@ -57,13 +57,16 @@ const SingleProduct = ({ name, id, username, token, setReload }) => (
             <Link to={ `/product/${id}` }><Button>View</Button></Link>
             <Button style={ { borderColor: "blue", color: "blue" } }>Update</Button>
             <Button style={ { borderColor: "red", color: "red" } } onClick={ () => {
-                deleteProduct(username, id, token).then(resData => {
-                    if (resData.error) {
-                        console.log(resData.error)
-                        return
-                    }
-                    setReload(prev => !prev)
-                })
+                const confirm = window.confirm(`Are you sure, You want to delete ${name}?`)
+                if (confirm) {
+                    deleteProduct(username, id, token).then(resData => {
+                        if (resData.error) {
+                            console.log(resData.error)
+                            return
+                        }
+                        setReload(prev => !prev)
+                    })
+                }
             } } >Delete</Button>
         </div>
     </div>

@@ -48,6 +48,7 @@ a.cardouter_link {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: rgb(224, 224, 224);
 }
 
 @keyframes SlideUp {

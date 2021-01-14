@@ -32,9 +32,9 @@ const Signin = () => {
             authenticate(resData, () => {
                 setData({ ...data, success: true })
             })
-            setTimeout(() => {
-                setData({ ...data, redirect: true })
-            }, 2000);
+            // setTimeout(() => {
+            //     setData({ ...data, redirect: true })
+            // }, 2000);
         })
     }
 

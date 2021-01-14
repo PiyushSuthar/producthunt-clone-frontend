@@ -14,7 +14,8 @@ const SingleComment = ({
     replies = [],
     id = "",
     username = "",
-    productId
+    productId,
+    removeFromArr
 }) => {
 
     const [showReply, setShowReply] = useState(false)
@@ -25,7 +26,7 @@ const SingleComment = ({
     })
     useEffect(() => {
         setReplies(replies)
-    }, [])
+    }, [replies])
 
     const handleInput = e => {
         setReplyData({ comment: e.target.value })
@@ -39,6 +40,8 @@ const SingleComment = ({
                     throw new Error(JSON.stringify(resData.message))
                 }
                 setReplies(prev => [...prev, resData])
+                setReplyData({ comment: "" })
+                setShowReply(prev => !prev)
             }).catch(err => {
                 throw new Error(err)
             })
@@ -50,6 +53,7 @@ const SingleComment = ({
                 console.log(resData.error)
                 return
             }
+            removeFromArr(id)
         })
     }
 
@@ -91,7 +95,7 @@ const SingleComment = ({
 
                     <form onSubmit={ handleSubmit } style={ { display: "flex", flexDirection: "row", alignItems: "flex-start", justifyContent: 'flex-start', width: "100%" } }>
                         <img loading="lazy" src={ isAuthenticated().user.userImageUrl } style={ { borderRadius: "50%", width: "50px", height: "auto" } } alt={ isAuthenticated().user.name } />
-                        <FormInput required onInput={ handleInput } parentStyle={ { width: "100%" } } row={ 5 } placeholder="Reply comment..." type="text" isTextArea={ true } />
+                        <FormInput required value={ replyData.comment } onInput={ handleInput } parentStyle={ { width: "100%" } } cols={ 5 } row={ 2 } placeholder="Reply comment..." type="text" isTextArea={ true } />
                         <Button>Send</Button>
                     </form>
                 ) : (

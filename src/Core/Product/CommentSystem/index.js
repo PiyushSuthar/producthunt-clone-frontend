@@ -34,7 +34,6 @@ const CommentSystem = ({ productid }) => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(productid)
         createComment(productid, isAuthenticated().token, { comment: data.comment }).then(resData => {
             if (resData.error) {
                 console.log(resData)
@@ -48,19 +47,24 @@ const CommentSystem = ({ productid }) => {
     const handleInput = e => {
         setData({ ...data, comment: e.target.value })
     }
+
+    // Components
+    // const CommentBox = () => 
+
     return (
         <WhiteBgContainer style={ { marginTop: "20px", padding: "20px" } }>
             <div className="comment_container">
                 <h3>Discussion</h3>
-                { isAuthenticated() ? (<>
+
+                {/* <CommentBox /> */ isAuthenticated() ? (
                     <div className="comment_input" style={ { display: "flex", flexDirection: "row", alignItems: "flex-start", marginTop: "10px" } } >
                         <img loading="lazy" src={ isAuthenticated().user.userImageUrl } style={ { borderRadius: "50%", width: "50px", height: "auto" } } alt={ isAuthenticated().user.name } />
                         <form style={ { width: "100%", display: "flex", flexDirection: "row", alignItems: "flex-start" } } onSubmit={ handleSubmit }>
-                            <FormInput required onInput={ handleInput } parentStyle={ { width: "100%" } } rows="5" isTextArea={ true } placeholder="Enter Your Comment!" />
+                            <FormInput required value={data.comment} onInput={ handleInput } parentStyle={ { width: "100%" } } rows="5" cols={5} isTextArea={ true } placeholder="Enter Your Comment!" />
                             <Button style={ { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" } }>Send <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" /></svg></Button>
                         </form>
                     </div>
-                </>
+
                 ) : (
                         <Link to={ `/signin?redirect=/product/${productid}` }>
                             <SuccessDialog color="purple">
@@ -68,8 +72,8 @@ const CommentSystem = ({ productid }) => {
                             </SuccessDialog>
                         </Link>
                     ) }
-                { commentsArr.map((commentData, index) => (
 
+                { commentsArr.map((commentData, index) => (
                     <SingleComment
                         key={ index }
                         name={ commentData.user.name }
@@ -79,6 +83,15 @@ const CommentSystem = ({ productid }) => {
                         avatar={ commentData.user.userImageUrl }
                         id={ commentData._id }
                         productId={ productid }
+                        removeFromArr={ () => {
+                            setComments(prev => {
+                                let filtered = prev.filter((value, i, a) => {
+                                    return value._id !== commentData._id
+                                })
+                                console.log(filtered)
+                                return filtered
+                            })
+                        } }
                     />
                 )) }
                 <div className="loadMoreButton" style={ { display: "flex", alignItems: "center", justifyContent: "center" } }>

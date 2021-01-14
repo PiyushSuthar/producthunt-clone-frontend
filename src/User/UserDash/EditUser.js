@@ -27,6 +27,7 @@ const EditUser = () => {
             }
             setData(prev => { return { ...prev, name: resData.name, userBio: resData.userBio, username: resData.username, loading: false } })
         })
+        return ()=> setData({})
     }, [])
 
     const handleSubmit = (e) => {
